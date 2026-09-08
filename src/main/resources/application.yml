@@ -1,0 +1,9 @@
+spring:
+    profiles:
+        active: dev
+    
+    # Junit 테스트시 .env 파일 로딩 문제 해결
+    config: 
+        import: file:./.env[.properties]
+# server:
+#   port: 8000

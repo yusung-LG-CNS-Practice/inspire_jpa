@@ -1,0 +1,69 @@
+// spring ai + open lib version
+// spring 4.x version spring ai x
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+// BOM(Bill Of Materials)
+//spring boot 버전에 맞는 spring ai lib version을 통합관리(통일 시키겠다..)
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:1.0.0"
+    }
+}
+
+dependencies {
+
+	// swagger api
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+	//.env 보안이 필요한 정보를 로컬에서만 사용하고 git-hub에는 공유하지 않겠다는 목적
+	implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+
+	// validation lib - JSR(303)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	
+	// Json Web Token(JWT)
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// inMemory DB : H2, Redis
+	// spring security
+	// spring ai + gpt openai
+
+	// basic dependency lib
+	implementation 		'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	implementation 		'org.springframework.boot:spring-boot-starter-web'
+	implementation 		'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+	developmentOnly 	'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 		'org.mariadb.jdbc:mariadb-java-client'
+	
+	compileOnly 		'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	testImplementation 	'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 	'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+	testRuntimeOnly 	'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
