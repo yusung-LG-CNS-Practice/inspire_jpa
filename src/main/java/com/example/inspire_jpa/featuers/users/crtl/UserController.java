@@ -23,6 +23,7 @@ import java.util.Map;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,6 +52,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Operation(summary = "회원가입", description = "신규가입(email, password, name)")
     @ApiResponses({
@@ -83,7 +85,7 @@ public class UserController {
 
             Map<String, String> errMap = new HashMap<>();
             bindingResult.getAllErrors().forEach(err -> {
-                FieldError field = (FieldError)err;
+                FieldError field = (FieldError) err;
                 String message = err.getDefaultMessage();
                 errMap.put(field.getField(), message);
             });
@@ -91,10 +93,16 @@ public class UserController {
             // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
+        ////////////////// spring security password hashing add
+        // toBuilder()를 통해서 일부 수정할 때 기존 객체를 복사해서 추가하는 피팩토링
+        // request.toBuilder()
+        // .password(passwordEncoder.encode(request.getPassword()))
+        // .build();
+        ///////////////////////////////////////////////////////
         UserResponseDTO response = userService.signUp(request);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(response);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     /*
@@ -108,13 +116,8 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "로그인 인증 오류"),
     })
     @GetMapping("/signIn")
-    public ResponseEntity<?> signIn(@io.swagger.v3.oas.annotations.parameters.RequestBody(
-                description = "사용자 로그인정보를 담는 DTO", 
-                required = true, 
-                content = @Content(
-                    schema = @Schema(implementation = UserRequestDTO.class)
-                )
-            ) @RequestParam("email") String email,
+    public ResponseEntity<?> signIn(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "사용자 로그인정보를 담는 DTO", required = true, content = @Content(schema = @Schema(implementation = UserRequestDTO.class))) @RequestParam("email") String email,
             @RequestParam("password") String password) {
 
         System.out.println("debug >>>> user controller signIn ");
@@ -127,7 +130,7 @@ public class UserController {
                 .build());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", (String) (map.get("at")));
+        headers.add("Authorization ", "Bearer " + (String) (map.get("at")));
         headers.add("Refresh-Token", (String) (map.get("rt")));
         headers.add("Access-Control-Expose-Headers", "Authorization, Refresh-Token");
 
@@ -135,5 +138,14 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .headers(headers)
                 .body((UserResponseDTO) (map.get("response")));
+    }
+
+    @PostMapping("/signOut")
+    public ResponseEntity<?> signOut() {
+
+        System.out.println("debug >>>> user controller signOut");
+        userService.signOut();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

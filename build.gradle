@@ -44,7 +44,11 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// inMemory DB : H2, Redis
+	implementation "org.springframework.boot:spring-boot-starter-data-redis"
+
 	// spring security
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	
 	// spring ai + gpt openai
 
 	// basic dependency lib

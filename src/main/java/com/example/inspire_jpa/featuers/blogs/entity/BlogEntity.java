@@ -36,6 +36,7 @@ public class BlogEntity {
 
     private Integer blogId;
     private String content;
+    private String title;
 
     @Column(columnDefinition = "VARCHAR(20) DEFAULT '전체' CHECK( CATEGORY IN ('전체', '개발', '생활', '취미', '일상'))")
     private String category;

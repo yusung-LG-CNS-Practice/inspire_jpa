@@ -1,5 +1,8 @@
 package com.example.inspire_jpa.featuers.blogs.domain.dto;
 
+import com.example.inspire_jpa.featuers.blogs.entity.BlogEntity;
+import com.example.inspire_jpa.featuers.users.domain.entity.UserEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,4 +17,13 @@ import lombok.ToString;
 public class BlogRequestDTO {
     
     private String title, content, category, email;
+
+    public BlogEntity toEntity(UserEntity user) {
+        return BlogEntity.builder()
+            .title(this.title)
+            .content(this.content)
+            .category(this.category)
+            .author(user)
+            .build();
+    };
 }

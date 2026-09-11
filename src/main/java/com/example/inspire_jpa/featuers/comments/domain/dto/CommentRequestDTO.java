@@ -1,5 +1,8 @@
 package com.example.inspire_jpa.featuers.comments.domain.dto;
 
+import com.example.inspire_jpa.featuers.blogs.entity.BlogEntity;
+import com.example.inspire_jpa.featuers.comments.domain.entity.CommentEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,5 +17,13 @@ import lombok.ToString;
 public class CommentRequestDTO {
     private Integer id;
     private String comment, email;
-    private Integer blogId;    
+    private Integer blogId;   
+    
+    public CommentEntity toEntity(BlogEntity blog){
+        return CommentEntity.builder()
+                            .comment(this.comment)
+                            .email(this.email)
+                            .blog(blog)
+                            .build();
+    }
 }

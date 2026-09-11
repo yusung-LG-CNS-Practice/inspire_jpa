@@ -1,5 +1,7 @@
 package com.example.inspire_jpa.featuers.comments.domain.dto;
 
+import com.example.inspire_jpa.featuers.comments.domain.entity.CommentEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +14,18 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentResponseDTO {
-    private Integer id;
+
+    private Integer commentId;
     private String comment, email;
     private Integer blogId;
+
+    public static CommentResponseDTO fromEntity(CommentEntity entity){
+        return CommentResponseDTO.builder()
+                                 .commentId(entity.getCommentId())
+                                 .comment(entity.getComment())
+                                 .email(entity.getEmail())
+                                 .blogId(entity.getBlog().getBlogId())
+                                 .build(); 
+    }
+
 }
