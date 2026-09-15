@@ -58,6 +58,13 @@ spring:
       password: 
       timeout: 6000ms
 
+  ai:
+    openai:
+      api-key: ${OPEN_AI_KEY}
+      chat:
+        options:
+          model: ${OPEN_AI_MODEL}
+          
 # mybatis:
 #   mapper-locations: classpath:/mappers/*.xml
   # type-aliases-package: com.example.testcase

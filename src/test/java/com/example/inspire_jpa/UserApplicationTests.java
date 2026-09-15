@@ -9,10 +9,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.inspire_jpa.featuers.users.domain.dto.UserRequestDTO;
-import com.example.inspire_jpa.featuers.users.domain.dto.UserResponseDTO;
-import com.example.inspire_jpa.featuers.users.domain.entity.UserEntity;
-import com.example.inspire_jpa.featuers.users.repository.UserRepository;
+import com.example.inspire_jpa.features.users.domain.dto.UserRequestDTO;
+import com.example.inspire_jpa.features.users.domain.dto.UserResponseDTO;
+import com.example.inspire_jpa.features.users.domain.entity.UserEntity;
+import com.example.inspire_jpa.features.users.repository.UserRepository;
 
 @SpringBootTest
 @Transactional

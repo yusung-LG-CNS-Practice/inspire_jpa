@@ -48,8 +48,15 @@ dependencies {
 
 	// spring security
 	implementation "org.springframework.boot:spring-boot-starter-security"
-	
-	// spring ai + gpt openai
+
+	// spring ai + gpt 
+	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+	implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webmvc'
+	implementation 'org.springframework.ai:spring-ai-starter-mcp-client'
+
+	// spring ai
+	implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	// basic dependency lib
 	implementation 		'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -66,6 +73,11 @@ dependencies {
 	testImplementation 	'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 	'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
 	testRuntimeOnly 	'org.junit.platform:junit-platform-launcher'
+}
+
+// spring security 에서 스웨거 에러 발생시
+configurations.configureEach {
+    exclude group: 'io.swagger.core.v3', module: 'swagger-annotations'
 }
 
 tasks.named('test') {
