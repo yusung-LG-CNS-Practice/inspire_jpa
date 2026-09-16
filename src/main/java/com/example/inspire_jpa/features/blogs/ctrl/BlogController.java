@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.inspire_jpa.features.blogs.ai.agent.BlogAIAgent;
 import com.example.inspire_jpa.features.blogs.domain.dto.BlogRequestDTO;
 import com.example.inspire_jpa.features.blogs.domain.dto.BlogResponseDTO;
 import com.example.inspire_jpa.features.blogs.service.BlogService;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class BlogController {
 
     private final BlogService blogService;
+    private final BlogAIAgent blogAgent;
 
     // endPoint -> http:// ip : port / blogs / index
     @GetMapping("/index")
@@ -45,7 +47,11 @@ public class BlogController {
         System.out.println("debug >>>> blog controller insert ");
         System.out.println("debug >>>> blog controller insert params : " + request);
 
-        BlogResponseDTO response = blogService.insert(request);
+        // 기존 insert
+        // BlogResponseDTO response = blogService.insert(request);
+
+        // 기존 agent로 변경
+        BlogResponseDTO response = blogAgent.insert(request);
         System.out.println("debug >>>> blog controller insert result flag : " + response);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -71,7 +77,11 @@ public class BlogController {
         System.out.println("debug >>>> blog controller agent params : " + map.get("category"));
         System.out.println("debug >>>> blog controller agent params : " + map.get("keyword"));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(blogService.contentGenerate(map));
+        // 기존 CRUD
+        // return ResponseEntity.status(HttpStatus.CREATED).body(blogService.contentGenerate(map));
+
+        // AI Agent
+        return ResponseEntity.status(HttpStatus.CREATED).body(blogAgent.generate(map));
     }
 
 }

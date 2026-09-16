@@ -25,7 +25,8 @@ public class BlogService {
     private final UserRepository userRepository;
     private final BlogRepository blogRepository;
 
-    private final ChatClient chatClient;
+    // agent 사용시 주석 필요함.
+    // private final ChatClient chatClient;
 
     @Transactional(readOnly = true)
     public List<BlogResponseDTO> list() {
@@ -116,21 +117,32 @@ public class BlogService {
                 .orElseThrow(() -> new RuntimeException(id + " BLOG NOT FOUND"));
     }
 
-    public String contentGenerate(Map<String, Object> map){
-        String result = chatClient
-                .prompt()
-                .user("""
-                    넌 국문학과박사 수료한 블로그작성 전문가야.
-                    주어진 카테고리와 키워드를 기반으로 차분한 톤의 블로그를 작성해줘.
-                    글자수는 200자 이내로 작성해줘.
-                        <조건>
-                            - 카테고리 : "%s"
-                            - 키워드 : "%s"
-                        </조건>
-                        """.formatted((String)map.get("category"), (String)map.get("keyword")))
-                .call()
-                .content();
+    // public String contentGenerate(Map<String, Object> map){
+    //     String result = chatClient
+    //             .prompt()
+    //             .user("""
+    //                 넌 국문학과박사 수료한 블로그작성 전문가야.
+    //                 주어진 카테고리와 키워드를 기반으로 차분한 톤의 블로그를 작성해줘.
+    //                 글자수는 200자 이내로 작성해줘.
+    //                     <조건>
+    //                         - 카테고리 : "%s"
+    //                         - 키워드 : "%s"
+    //                     </조건>
+    //                     """.formatted((String)map.get("category"), (String)map.get("keyword")))
+    //             .call()
+    //             .content();
 
-        return result;
+    //     return result;
+    // }
+
+    public List<BlogResponseDTO> searchByKeyword(Map<String, Object> map){
+
+        System.out.println("debug >>>> blog service searchByKeyword by BlogAITool");
+
+        return blogRepository.findByContentAndCategory((String)(map.get("keyword")),
+                                                       (String)(map.get("category")))
+                                                        .stream()
+                                                        .map(BlogResponseDTO::fromEntity)
+                                                        .toList();
     }
 }
