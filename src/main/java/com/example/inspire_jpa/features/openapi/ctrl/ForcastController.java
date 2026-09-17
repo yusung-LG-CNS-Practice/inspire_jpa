@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController 
-@RequestMapping("/openapi")
+@RequestMapping("/forcast")
 @RequiredArgsConstructor 
 public class ForcastController {
 

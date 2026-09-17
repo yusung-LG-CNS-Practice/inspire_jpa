@@ -65,7 +65,8 @@ public class SecurityConfig {
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/openai/**",
-                        "/openapi/**").permitAll()
+                        "/openapi/**",
+                        "/forcast/**").permitAll()
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
